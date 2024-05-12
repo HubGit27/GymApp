@@ -16,14 +16,13 @@ def addMuscleGroupRelationship(exercise_info):
     exercise = Exercise(dbcon)
     exercise_id = exercise.getExerciseIDByName(exercise_info[0])
 
-    # If exercise does not exist, insert it into the database
     if not exercise_id:
         exercise.name = exercise_info[0]
         exercise.description = exercise_info[2]
         exercise.insert()
         exercise_id = exercise.getExerciseIDByName(exercise_info[0])
 
-    # Create a MuscleGroup object and get the MuscleGroupID
+    # MuscleGroup object and MuscleGroupID
     muscle_group = MuscleGroup(dbcon)
     muscle_group_id = muscle_group.getMuscleGroupIDByName(exercise_info[1])
 
@@ -32,7 +31,7 @@ def addMuscleGroupRelationship(exercise_info):
         muscle_group.insert()
         muscle_group_id = muscle_group.getMuscleGroupIDByName(exercise_info[1])
 
-    # Create an ExerciseMuscleGroup object and establish the relationship
+    # Create an ExerciseMuscleGroup relationship
     exercise_muscle_group = ExerciseMuscleGroup(dbcon)
     exercise_muscle_group.ExerciseID = exercise_id
     exercise_muscle_group.MuscleGroupID = muscle_group_id
@@ -125,11 +124,10 @@ def GetUser():
                 password = input("Enter your password: ")
                 user_id = user.getUserIDByUsername(username)
                 if user_id:
-                    # If the username exists, check if the provided password is correct
+                    # If the username exists, check password is correct
                     if user.isPasswordCorrect(user_id, password):
                         print("Sign-in successful!")
                         invalid = False
-                        # Perform any additional actions after successful sign-in
                     else:
                         print("Incorrect password. Please try again.")
                 else:
@@ -203,7 +201,7 @@ def startWorkout(userID):
                     exerciseset.insert()
                     tempInput = int(input("Enter 1 to add another set. Enter 2 to finish exercise: "))
             else:
-                print("Exercise does not exist")
+                print("Exercise not in current version")
 
         elif (userInput == 2):
             print("editing exercises")
@@ -250,7 +248,7 @@ def startWorkout(userID):
             minutes = int((total_time % 3600) // 60)
             seconds = int(total_time % 60)
 
-            # Format the duration as HH:MM:SS
+            # Format as HH:MM:SS
             duration_str = '{:02}:{:02}:{:02}'.format(hours, minutes, seconds)
 
             workout.updateWorkoutDuration(workoutid, duration_str)

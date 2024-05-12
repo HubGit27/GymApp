@@ -22,14 +22,11 @@ class User:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO User (firstname, lastname, username, email, password, datejoined) VALUES (%s, %s, %s, %s, %s, %s)'
         val = (self.firstname, self.lastname, self.username, self.email, self.password, self.datejoined)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
 
@@ -37,30 +34,25 @@ class User:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve the user ID based on the provided username
         sql = "SELECT UserID FROM GYM.User WHERE username = %s"
         mysqlcursor.execute(sql, (username,))
         result = mysqlcursor.fetchone()
 
-        # If a matching user is found, return the user ID
         if result:
             return result[0]
         else:
             return None
         #tempconn.close()
 
-    # Function to check if the provided password matches the password stored in the database
     def isPasswordCorrect(self, user_id, password):
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve the password hash for the provided user ID
         sql = "SELECT password FROM GYM.User WHERE UserID = %s"
         mysqlcursor.execute(sql, (user_id,))
         result = mysqlcursor.fetchone()
-        # If a matching user is found and the provided password matches the stored password hash, return True
         if result:
-            if (result[0] == password):  # Implement appropriate password hashing mechanism here
+            if (result[0] == password): 
                 return True
             else:
                 return False
@@ -78,14 +70,11 @@ class MuscleGroup:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO MuscleGroup (name) VALUES (%s)'
         val = (self.name,)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
 
@@ -93,17 +82,15 @@ class MuscleGroup:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select all rows from the MuscleGroup table
         sql = "SELECT * FROM MuscleGroup"
         mysqlcursor.execute(sql)
         results = mysqlcursor.fetchall()
         return results
-#tempconn.close()
+    
     def getMuscleGroupIDByName(self, muscle_group_name):
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select the MuscleGroupID for the given muscle group name
         sql = "SELECT MuscleGroupID FROM MuscleGroup WHERE name = %s"
         val = (muscle_group_name,)
         mysqlcursor.execute(sql, val)
@@ -125,21 +112,17 @@ class Exercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO Exercise (name, description) VALUES (%s, %s)'
         val = (self.name, self.description)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
 
     def getNameByExerciseID(self, ExerciseID):
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select the MuscleGroupID for the given muscle group name
         sql = "SELECT Name FROM Exercise WHERE ExerciseID = %s"
         val = (ExerciseID,)
         mysqlcursor.execute(sql, val)
@@ -154,7 +137,6 @@ class Exercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select the MuscleGroupID for the given muscle group name
         sql = "SELECT ExerciseID FROM Exercise WHERE name = %s"
         val = (exercise_name,)
         mysqlcursor.execute(sql, val)
@@ -169,7 +151,6 @@ class Exercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select all exercises
         sql = "SELECT * FROM Exercise"
         mysqlcursor.execute(sql)
         results = mysqlcursor.fetchall()
@@ -180,7 +161,6 @@ class Exercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Select exercises based on muscle group ID
         sql = """
                 SELECT e.* 
                 FROM Exercise e 
@@ -196,13 +176,11 @@ class Exercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to check if the exercise ID exists in the Exercise table
         sql = "SELECT COUNT(*) FROM Exercise WHERE ExerciseID = %s"
         val = (exerciseID,)
         mysqlcursor.execute(sql, val)
         result = mysqlcursor.fetchone()
 
-        # If the count is greater than 0, the exercise ID exists
         if result and result[0] > 0:
             return True
         else:
@@ -222,14 +200,11 @@ class Workout:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO Workout (UserID, name, duration, date) VALUES (%s, %s, %s, %s)'
         val = (self.UserID, self.name, self.duration, self.date)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
 
@@ -237,11 +212,9 @@ class Workout:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Update SQL
         sql = 'UPDATE Workout SET duration = %s WHERE WorkoutID = %s'
         val = (self.duration, self.WorkoutID)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
         # Commit changes
@@ -251,13 +224,11 @@ class Workout:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve the workout ID based on the provided user ID, workout name, and duration
         sql = "SELECT WorkoutID FROM Workout WHERE UserID = %s AND name = %s AND date = %s"
         val = (userID, workoutName, date)
         mysqlcursor.execute(sql, val)
         result = mysqlcursor.fetchone()
 
-        # If a matching workout is found, return the workout ID
         if result:
             return result[0]
         else:
@@ -267,7 +238,6 @@ class Workout:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve all workouts belonging to the provided user ID
         sql = "SELECT * FROM Workout WHERE UserID = %s"
         val = (userID,)
         mysqlcursor.execute(sql, val)
@@ -279,14 +249,11 @@ class Workout:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Update SQL
         sql = "UPDATE Workout SET duration = %s WHERE WorkoutID = %s"
         val = (new_duration, WorkoutID)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
 
 class WorkoutExercise:
@@ -300,14 +267,11 @@ class WorkoutExercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO WorkoutExercise (WorkoutID, ExerciseID) VALUES (%s, %s)'
         val = (self.WorkoutID, self.ExerciseID)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
         
@@ -315,13 +279,11 @@ class WorkoutExercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve the WorkoutExerciseID based on the provided WorkoutID and ExerciseID
         sql = "SELECT WorkoutExerciseID FROM WorkoutExercise WHERE WorkoutID = %s AND ExerciseID = %s"
         val = (workoutID, exerciseID)
         mysqlcursor.execute(sql, val)
         result = mysqlcursor.fetchone()
 
-        # If a matching workout exercise is found, return the WorkoutExerciseID
         if result:
             return result[0]
         else:
@@ -331,7 +293,6 @@ class WorkoutExercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve all WorkoutExercises with the provided WorkoutID
         sql = "SELECT * FROM WorkoutExercise WHERE WorkoutID = %s"
         val = (workoutID,)
         mysqlcursor.execute(sql, val)
@@ -342,14 +303,11 @@ class WorkoutExercise:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Delete SQL
         sql = "DELETE FROM WorkoutExercise WHERE WorkoutExerciseID = %s"
         val = (WorkoutExerciseID,)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
 
 class ExerciseMuscleGroup:
@@ -363,14 +321,11 @@ class ExerciseMuscleGroup:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO ExerciseMuscleGroup (ExerciseID, MuscleGroupID) VALUES (%s, %s)'
         val = (self.ExerciseID, self.MuscleGroupID)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
 
@@ -386,14 +341,11 @@ class ExerciseSet:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Insert SQL
         sql = 'INSERT INTO ExerciseSet (WorkoutExerciseID, reps, weight) VALUES (%s, %s, %s)'
         val = (self.WorkoutExerciseID, self.reps, self.weight)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
         #tempconn.close()
 
@@ -401,7 +353,6 @@ class ExerciseSet:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Query to retrieve all WorkoutExercises with the provided WorkoutID
         sql = "SELECT * FROM ExerciseSet WHERE WorkoutExerciseID = %s"
         val = (workoutexerciseid,)
         mysqlcursor.execute(sql, val)
@@ -412,40 +363,31 @@ class ExerciseSet:
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Update SQL
         sql = "UPDATE ExerciseSet SET reps = %s, weight = %s WHERE ExerciseSetID = %s"
         val = (reps, weight, ExerciseSetID)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
 
     def deleteExerciseSet(self, ExerciseSetID):
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Delete SQL
         sql = "DELETE FROM ExerciseSet WHERE ExerciseSetID = %s"
         val = (ExerciseSetID,)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
 
     def deleteExerciseSetsByWorkoutExerciseID(self, WorkoutExerciseID):
         tempconn = self.dbconn.getConnection()
         mysqlcursor = tempconn.cursor()
 
-        # Delete SQL
         sql = "DELETE FROM ExerciseSet WHERE WorkoutExerciseID = %s"
         val = (WorkoutExerciseID,)
 
-        # Execute the SQL command
         mysqlcursor.execute(sql, val)
 
-        # Commit changes
         tempconn.commit()
