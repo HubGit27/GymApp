@@ -4,7 +4,12 @@ INSERT INTO GYM.MuscleGroup (MuscleGroupID, name) VALUES
 (NEXTVAL(GYM.musclegroup_seq),'Back'),
 (NEXTVAL(GYM.musclegroup_seq),'Legs'),
 (NEXTVAL(GYM.musclegroup_seq),'Shoulders'),
-(NEXTVAL(GYM.musclegroup_seq),'Arms');
+(NEXTVAL(GYM.musclegroup_seq),'Arms'),
+(NEXTVAL(GYM.musclegroup_seq), 'Lats'),
+(NEXTVAL(GYM.musclegroup_seq), 'Quads'),
+(NEXTVAL(GYM.musclegroup_seq), 'Calves'),
+(NEXTVAL(GYM.musclegroup_seq), 'Hamstrings'),
+(NEXTVAL(GYM.musclegroup_seq), 'Abs');
 
 -- Insert sample data into Exercise table
 INSERT INTO GYM.Exercise (ExerciseID, name, description) VALUES

@@ -12,7 +12,9 @@ CREATE TABLE GYM.User (
     username VARCHAR(50) UNIQUE,
     email VARCHAR(100) UNIQUE,
     password VARCHAR(100),
-    datejoined DATE
+    datejoined DATE,
+    INDEX idx_username (username),
+    INDEX idx_password (password)        
 );
 
 -- MuscleGroup table
@@ -44,7 +46,9 @@ CREATE TABLE GYM.WorkoutExercise (
     WorkoutID INT,
     ExerciseID INT,
     FOREIGN KEY (WorkoutID) REFERENCES Workout(WorkoutID),
-    FOREIGN KEY (ExerciseID) REFERENCES Exercise(ExerciseID)
+    FOREIGN KEY (ExerciseID) REFERENCES Exercise(ExerciseID),
+    INDEX idx_workout_id (WorkoutID), 
+    INDEX idx_exercise_id (ExerciseID)
 );
 
 -- ExerciseMuscleGroup table
@@ -62,7 +66,8 @@ CREATE TABLE GYM.ExerciseSet (
     WorkoutExerciseID INT,
     reps INT,
     weight DECIMAL(10,2),
-    FOREIGN KEY (WorkoutExerciseID) REFERENCES WorkoutExercise(WorkoutExerciseID)
+    FOREIGN KEY (WorkoutExerciseID) REFERENCES WorkoutExercise(WorkoutExerciseID),
+    INDEX idx_workout_exercise_id (WorkoutExerciseID)
 );
 
 -- Sequence creation

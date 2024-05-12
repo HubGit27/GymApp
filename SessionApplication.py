@@ -119,7 +119,6 @@ def GetUser():
                 user.datejoined = datetime.now().date()
                 user.insert()
                 user_id = user.getUserIDByUsername(user.username)
-                print(user_id)
                 invalid = False
             if userInput == 2:
                 username = input("Enter your username: ")
@@ -239,15 +238,23 @@ def startWorkout(userID):
                     print(f"    Set {counter}: {j[2]} reps at {j[3]} pounds")
                     counter += 1
             
-            workoutExerciseSetIdInput = print("Enter the ID of the exercise you would like to delete")
+            workoutExerciseSetIdInput = input("Enter the ID of the exercise you would like to delete")
             exerciseset.deleteExerciseSetsByWorkoutExerciseID(workoutExerciseSetIdInput)
             workoutexercise.deleteWorkoutExercise(workoutExerciseSetIdInput)
+            print("exercise deleted")
             
         else:
             total_time_end = time.time()
             total_time = total_time_end - total_time_start
-            workout.updateWorkoutDuration(workoutid, total_time)
-            print(f"Total Workout time: {total_time}")
+            hours = int(total_time // 3600)
+            minutes = int((total_time % 3600) // 60)
+            seconds = int(total_time % 60)
+
+            # Format the duration as HH:MM:SS
+            duration_str = '{:02}:{:02}:{:02}'.format(hours, minutes, seconds)
+
+            workout.updateWorkoutDuration(workoutid, duration_str)
+            print(f"Total Workout time: {duration_str}")
             allexercises = workoutexercise.findWorkoutExercisesByWorkoutID(workoutid)
             for i in allexercises:
                 print(f"{exercise.getNameByExerciseID(i[2])}: ")
@@ -256,8 +263,6 @@ def startWorkout(userID):
                 for j in exercisesets:
                     print(f"    Set {counter}: {j[2]} reps at {j[3]} pounds)")
                     counter += 1
-
-
 
 def viewWorkouts(userID):
     workoutexercise = WorkoutExercise(dbcon)
